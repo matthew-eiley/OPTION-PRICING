@@ -50,11 +50,38 @@ AmerImpVol76(option_type, x, fs, t, r, cp)
 ```
 
 ### Inputs used by all
+| Parameter | Description |
+| :-------: | :---------- |
+| `option_type` | Putt/Call indicator. `p` indicates a put and `c` indicates a call. |
+| `fs` | Price of underlying. `fs` is used generically, but some models use `f` (forward price) or `s` (spot price). |
+| `x` | Strike price. This is the exercise price. |
+| `t` | Time to maturity. Given in years. |
+| `r` | Risk-free interest rate. |
+| `v` | Implied volatility. Annualized implied volatility. |
 
 ### Inputs used by some
+| Parameter | Description |
+| :-------: | :---------- |
+| `q` | Continuous dividend. |
+| `rf` | Foreign interest rate. |
+| `ta` | Asian start time. This is the time that starts the averaging period. As `ta` approaches `t`, the Asian76 value should approach the Black76 value. |
+| `cp` | Option price (used in implied volatility calculations). |
+| `f1` | Price of underlying 1 in a spread. |
+| `f2` | Price of underlying 2 in a spread. |
+| `v1` | Implied volatility of first asset in a spread. |
+| `v2` | Implied volatility of second asset in a spread. |
+| `corr` | Correlation between the two assets in a spread. |
 
 ### Outputs
-
+If using the program and not the UI, the output of each function is simply an array with the following elements:
+| Index   | Description |
+| ------- | :---------- |
+| `[0]`   | Value |
+| `[1]`   | Delta (sensitivity of value to cahnges in price) |
+| `[2]`   | Gamma (sensitivity of delta to changes in price) |
+| `[3]`   | Theta (sensitivity of value to changes in time to expiration) |
+| `[4]`   | Vega (sensitivity of value to changes in volatility) |
+| `[5]`   | Rho (sensitivity of value to changes in risk-free rates) |
 
 ## Theory
 
