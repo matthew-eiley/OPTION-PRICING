@@ -3,9 +3,9 @@ This is the classic case of a European option on a stock with no dividends. The 
 applies, providing a closed-form solution for call and put prices. Implied volatility is obtained 
 by inverting the Black-Scholes formula numerically (since no closed-form solution exists for $\sigma$). 
 
-FIND THE CODE FOR THIS README [HERE](./1_european_non_dividend_stocks.py)
+FIND THE CODE ASSOCIATED WITH THIS README [HERE](../src/1_european_non_dividend_stocks.py)
 
-## Pricing Model
+## Pricing Model: Black-Scholes
 The Black-Scholes (1973) formula uses the Black-Scholes-Merton differential equation to price European calls and puts on a non-dividend-paying underlying. This model assumes no dividends during the option’s life and that exercise can only occur at expiration (European-style). The model requires five inputs:
 | Input | Description |
 | ----- | ----------- |
@@ -27,7 +27,7 @@ With:
 $$
 d_{1,2} = \frac{\ln\left(\frac{S}{K}\right)+T\left(r\pm \frac{\sigma ^2}{2}\right)}{\sigma \sqrt{T}}
 $$
-And $N(\cdot)$ as the standard normal cumulative distribution function. The put price is obtained via put-call parity. 
+And $N(\cdot)$ as the standard normal cumulative distribution function.
 
 #### Function Signature
 Returns the theoretical option price for a call or put:
@@ -39,7 +39,7 @@ Returns the theoretical option price for a call or put:
 Black-Scholes implied volatility – Solve for $\sigma$ by numerically inverting the Black-Scholes pricing function. Given a market option price, this function finds the $\sigma$ that reproduces this price in the Black-Scholes formula. There is no closed-form solution for implied vol in the Black-Scholes model, so the Brent's (iterative) method is used.
 
 #### Function Signature
-Returns the implied volatility for given option:
+Returns the implied volatility for the given Eruopean, non-dividend stock option:
 
 `bs_implied_vol(price, S, K, T, r, option_type) -> float`
 
