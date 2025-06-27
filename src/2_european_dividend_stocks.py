@@ -23,19 +23,22 @@ def bsm_price(S, K, T, r, q, sigma, option_type):
     d2 = get_ds(S, K, T, r, q, sigma)[1]
     match option_type:
         case 'c':
-            return (S * np.exp(-1*q*T) * norm.cdf(d1)) - (K * np.exp(-1*r*T) * norm.cdf(d2))
+            ans = (S * np.exp(-1*q*T) * norm.cdf(d1)) - (K * np.exp(-1*r*T) * norm.cdf(d2))
+            return round(ans, 2)
         case 'p':
-            return (K * np.exp(-1*r*T) * norm.cdf(-1*d2)) - (S * np.exp(-1*q*T) * norm.cdf(-1*d1))
+            ans = (K * np.exp(-1*r*T) * norm.cdf(-1*d2)) - (S * np.exp(-1*q*T) * norm.cdf(-1*d1))
+            return round(ans, 2)
 
 
 ####################################################################
 # ====================== IMPLIED VOLATILITY ====================== #
 ####################################################################
 
-def bs_implied_vol(price, S, K, T, r, q, option_type):
+def bsm_implied_vol(price, S, K, T, r, q, option_type):
     def objective(sigma):
         return bsm_price(S, K, T, r, q, sigma, option_type) - price
-    return brentq(objective, 1e-6, 5.0)
+    ans = brentq(objective, 1e-6, 5.0)
+    return round(ans*100, 2)
 
 
 #############################################################################
@@ -44,22 +47,24 @@ def bs_implied_vol(price, S, K, T, r, q, option_type):
 
 def bsm_greeks(S, K, T, r, q, sigma, option_type):
     sol = {"delta":None, "gamma":None, "vega":None, "theta":None, "rho":None}
-    d1 = get_ds(S, K, T, r, sigma)[0]
-    d2 = get_ds(S, K, T, r, sigma)[1]
+    d1 = get_ds(S, K, T, r, q, sigma)[0]
+    d2 = get_ds(S, K, T, r, q, sigma)[1]
     
     match option_type:
         case 'c':
-            delta = norm.cdf(d1)
-            gamma = norm.pdf(d1)/(S * sigma * np.sqrt(T))
-            vega = S * norm.pdf(d1) * np.sqrt(T)
-            theta = (-1 * ((S * norm.pdf(d1) * sigma)/(2 * np.sqrt(T)))) -\
+            delta = np.exp(-1*q*T) * norm.cdf(d1)
+            gamma = (np.exp(-1*q*T) * norm.pdf(d1))/(S * sigma * np.sqrt(T))
+            vega = S * np.exp(-1*q*T) * norm.pdf(d1) * np.sqrt(T)
+            theta = ((-1 * S * np.exp(-1*q*T) * norm.pdf(d1) * sigma)/(2 * np.sqrt(T))) +\
+                (q * S * np.exp(-1*q*T) * norm.cdf(d1)) -\
                 (r * K * np.exp(-1*r*T) * norm.cdf(d2))
             rho = K * T * np.exp(-1*r*T) * norm.cdf(d2)
         case 'p':
-            delta = norm.cdf(d1) - 1
-            gamma = norm.pdf(d1)/(S * sigma * np.sqrt(T))
-            vega = S * norm.pdf(d1) * np.sqrt(T)
-            theta = (-1 * ((S * norm.pdf(d1) * sigma)/(2 * np.sqrt(T)))) +\
+            delta = -1 * np.exp(-1*q*T) * norm.cdf(-1*d1)
+            gamma = (np.exp(-1*q*T) * norm.pdf(d1))/(S * sigma * np.sqrt(T))
+            vega = S * np.exp(-1*q*T) * norm.pdf(d1) * np.sqrt(T)
+            theta = ((-1 * S * np.exp(-1*q*T) * norm.pdf(d1) * sigma)/(2 * np.sqrt(T))) -\
+                (q * S * np.exp(-1*q*T) * norm.cdf(-1*d1)) +\
                 (r * K * np.exp(-1*r*T) * norm.cdf(-1*d2))
             rho = -1 * K * T * np.exp(-1*r*T) * norm.cdf(-1*d2)
 
