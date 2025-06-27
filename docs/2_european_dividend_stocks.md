@@ -42,3 +42,27 @@ Returns the implied volatility for the given Eruopean, dividend-yielding stock o
 
 `bsm_implied_vol(price, S, K, T, r, q, option_type) -> float`
 
+## Greeks
+
+These are all first or second-order partial derivatives of the dividend-adjusted option pricing function $V(S,K,T,r,q, \sigma)$ to measure how the option's price reacts to changes in market inputs, now incorporating a continuous dividend yield $q$.
+
+- **Delta ($\Delta$):** Sensitivity of the option’s price to changes in the underlying asset price.
+- **Gamma ($\Gamma$):** The rate of change of delta with respect to the underlying price (i.e. how stable delta is).
+- **Vega ($\nu$):** Sensitivity of the option’s price to changes in volatility ($\sigma$).
+- **Theta ($\Theta$):** Sensitivity of the option’s price to the passage of time (i.e., time decay).
+- **Rho ($\rho$):** Sensitivity of the option’s price to changes in the risk-free interest rate.
+
+These measures are defined as follows:
+$$\Delta = \frac{\partial V}{\partial S}$$
+$$\Gamma = \frac{\partial^2 V}{\partial S^2}$$
+$$\nu = \frac{\partial V}{\partial \sigma}$$
+$$\Theta = -\frac{\partial V}{\partial T}$$
+$$\rho = \frac{\partial V}{\partial r}$$
+
+The only new variable introduced in these calculations is $n(\cdot)$, which is the standard normal probability density function.
+#### Function Signature
+Returns a dictionary of the greeks for the given option:
+
+`bs_implied_vol(price, S, K, T, r, option_type) -> dict`
+
+`{"delta": , "gamma": , "vega": , "theta": , "rho": ,}`
