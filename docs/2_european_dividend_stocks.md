@@ -41,3 +41,4 @@ Dividend-adjusted implied volatility – This is calculated by numerically inver
 Returns the implied volatility for the given Eruopean, dividend-yielding stock option:
 
 `bsm_implied_vol(price, S, K, T, r, q, option_type) -> float`
+
