@@ -4,7 +4,7 @@ This case extends the standard Black-Scholes model to account for continuous div
 FIND THE CODE ASSOCIATED WITH THIS README [HERE](../src/2_european_dividend_stocks.py)
 
 ## Pricing Model: Black-Scholes-Merton
-The Black-Scholes-Merton (1973) formula adjusts the classic Black-Scholes framework by incorporating a continuous dividend yield $q$. Dividends reduce the effective cost of holding the stock, which lowers the present value of the underlying. In practice, this is modeled by replacing $S$ with $Se^{-qT} in the pricing formula. This model assumes exercise only at expiration (European-style). This model requires six inputs:
+The Black-Scholes-Merton (1973) formula adjusts the classic Black-Scholes framework by incorporating a continuous dividend yield $q$. Dividends reduce the effective cost of holding the stock, which lowers the present value of the underlying. In practice, this is modeled by replacing $S$ with $Se^{-qT} in the pricing formula. This model assumes exercise only at expiration (European-style). The model requires six inputs:
 | Input | Description |
 | ----- | ----------- |
 | `S` |	Spot price of the underlying asset (i.e. current market price) |
@@ -63,6 +63,6 @@ The only new variable introduced in these calculations is $n(\cdot)$, which is t
 #### Function Signature
 Returns a dictionary of the greeks for the given option:
 
-`bs_implied_vol(price, S, K, T, r, option_type) -> dict`
+`bsm_greeks(S, K, T, r, q, sigma, option_type) -> dict`
 
 `{"delta": , "gamma": , "vega": , "theta": , "rho": ,}`

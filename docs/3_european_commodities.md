@@ -62,6 +62,6 @@ The only new variable introduced in these calculations is $n(\cdot)$, which is t
 #### Function Signature
 Returns a dictionary of the greeks for the given option:
 
-`bs_implied_vol(price, S, K, T, r, option_type) -> dict`
+`b76_greeks(F, K, T, r, sigma, option_type) -> dict`
 
 `{"delta": , "gamma": , "vega": , "theta": , "rho": ,}`
